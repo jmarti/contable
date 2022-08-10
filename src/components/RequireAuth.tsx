@@ -1,15 +1,12 @@
-import { ReactNode } from "react";
-import { Navigate, useLocation } from "react-router";
-import { useAppContext } from "../App.context";
+import { useAuthContext } from "../contexts/Auth.context";
 
 const RequireAuth = ({ children }: { children: JSX.Element }) => {
-    const { logged } = useAppContext();
-    const location = useLocation();
+    const { logged } = useAuthContext()
   
     if (logged === null) {
-        return <>Loading</>
-    } else if (!logged) {
-        return <Navigate to="/login" state={{ from: location }} replace />;
+        return <>Loading...</>
+    } else if (logged === false) {
+        return <>Login needed</>
     }
   
     return children;

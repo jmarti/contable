@@ -1,11 +1,11 @@
 import { Button } from 'antd'
 
-const Configure = () => {
+const Settings = () => {
     return (
         <>
-            <Button>Configure</Button>
+            <Button>Settings</Button>
         </>
     )
 }
 
-export default Configure
+export default Settings

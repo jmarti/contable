@@ -1,10 +1,9 @@
-import { useAppContext } from '../App.context'
+import { useAuthContext } from '../App.context'
 import Configure from '../components/Configure'
-import PageLayout from '../layouts/PageLayout'
 
 
 const DashboardView = () => {
-    const { spreadsheetId } = useAppContext()
+    const { spreadsheetId } = useAuthContext()
 
     return (
         <>
