@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.7.0",
     "@react-oauth/google": "^0.2.6",
     "antd": "^4.22.4",
     "google-auth-library": "^8.1.1",
