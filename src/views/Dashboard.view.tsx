@@ -1,13 +1,13 @@
-import { useAuthContext } from '../App.context'
+import { useAppContext } from '../App.context'
 import Configure from '../components/Configure'
 
 
 const DashboardView = () => {
-    const { spreadsheetId } = useAuthContext()
+    const { googleSheetId } = useAppContext()
 
     return (
         <>
-            {!spreadsheetId && <Configure />}
+            {!googleSheetId && <Configure />}
         </>
     )
 }

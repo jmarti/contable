@@ -1,21 +1,22 @@
-import { ReactNode } from "react"
-import { Button, Layout, Menu } from 'antd'
+import { ReactNode, useEffect } from "react"
+import { Layout, Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { LoginOutlined, SettingOutlined } from '@ant-design/icons'
+import { SettingOutlined } from '@ant-design/icons'
 import { useAuthContext } from "../contexts/Auth.context"
 import logo from '../assets/logo.svg'
 import LoginButton from "../components/LoginButton"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
 
 const { Content, Sider } = Layout
 
 const PageLayout = ({ children }: { children: ReactNode}) => {
     const { logged } = useAuthContext()
+    const location = useLocation()
 
     const loggedMenuItems: MenuProps['items'] = [
         {
-            key: 'settings',
+            key: '/settings',
             icon: <SettingOutlined />,
             label: <Link to="/settings">Settings</Link>
         }
@@ -41,6 +42,7 @@ const PageLayout = ({ children }: { children: ReactNode}) => {
                             mode='inline'
                             theme='dark'
                             items={loggedMenuItems}
+                            selectedKeys={[location.pathname]}
                             style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}
                         />
                     )}

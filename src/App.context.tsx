@@ -1,29 +1,47 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import persistDataService from "./services/persistData.service";
 
-type SpreadsheetId = string | null
+type GoogleSheetId = string | null
 
 type AppContextType = {
-    spreadsheetId: string | null,
-    setSpreadSheetId: (spreadsheetId: SpreadsheetId) => void,
+    googleSheetId: string | null,
+    setGoogleSheetId: (googleSheetId: GoogleSheetId) => void,
 }
 
+const GOOGLE_SHEET_ID_KEY = 'googleSheetId'
+
 const AppContext = createContext<AppContextType>({
-    spreadsheetId: null,
-    setSpreadSheetId: () => {},
+    googleSheetId: null,
+    setGoogleSheetId: () => {},
 })
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
-    const [spreadsheetId, setSpreadSheetId] = useState<SpreadsheetId>(null)
+    const [googleSheetId, setGoogleSheetId] = useState<GoogleSheetId>(null)
+
+    useEffect(() => {
+        const savedGoogleSheetId = persistDataService.get(GOOGLE_SHEET_ID_KEY)
+        if (savedGoogleSheetId) {
+            setGoogleSheetId(savedGoogleSheetId)
+        }
+    }, [])
+
+    const handleSetGoogleSheetId = (id: GoogleSheetId) => {
+        if (!id) {
+            return
+        }
+        persistDataService.set(GOOGLE_SHEET_ID_KEY, id)
+        setGoogleSheetId(id)
+    }
 
     return (
         <AppContext.Provider value={{
-            spreadsheetId,
-            setSpreadSheetId,
+            googleSheetId,
+            setGoogleSheetId: handleSetGoogleSheetId,
         }}>
             {children}
         </AppContext.Provider>
     )
 }
 
-export const useAuthContext = () => useContext(AppContext)
+export const useAppContext = () => useContext(AppContext)

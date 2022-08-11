@@ -27,7 +27,6 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
         scope: 'https://www.googleapis.com/auth/spreadsheets',
         onSuccess: (tokenResponse: TokenResponse) => {
             handleSetAccessToken(tokenResponse)
-            // onSuccess && onSuccess()
         },
     })
 
