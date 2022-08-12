@@ -1,0 +1,1 @@
+export const GOOGLE_SHEET_URL_KEY = 'googleSheetUrl'

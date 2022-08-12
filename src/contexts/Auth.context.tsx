@@ -1,63 +1,73 @@
-import { hasGrantedAnyScopeGoogle, TokenResponse, useGoogleLogin } from "@react-oauth/google";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import persistDataService from "../services/persistData.service";
+import { CodeResponse, useGoogleLogin } from "@react-oauth/google"
+import { createContext, ReactNode, useContext, useEffect, useState } from "react"
+import authService, { GoogleCredentials, GoogleUserDetails } from "../services/auth.service"
 
-type AccessToken = string | null
 type Logged = boolean | null
 
+type UserDetails = {
+    firstName: string
+    picture: string
+    locale: string
+} | null
+
 type AuthContextType = {
-    accessToken: AccessToken,
+    logged: Logged,
+    userDetails: UserDetails,
     doLogin: () => void,
-    logged: Logged
 }
 
-const ACCESS_TOKEN_KEY = 'accessToken'
-
-const AuthContext = createContext<AuthContextType>({
-    accessToken: null,
+export const AuthContext = createContext<AuthContextType>({
+    logged: null,
+    userDetails: null,
     doLogin: () => {},
-    logged: null
 })
 
 export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
-    const [accessToken, setAccessToken] = useState<AccessToken>(null)
     const [logged, setLogged] = useState<Logged>(null)
+    const [userDetails, setUserDetails] = useState<UserDetails>(null)
+
+    useEffect(() => {
+        async function getAuthInfo() {
+            const gAuthInfo = await authService.getAuthInfo()
+            if (gAuthInfo) {
+                handleLogged(gAuthInfo)
+            } else {
+                setLogged(false)
+            }
+        }
+
+        getAuthInfo()
+    }, [])
 
     const doLogin = useGoogleLogin({
         scope: 'https://www.googleapis.com/auth/spreadsheets',
-        onSuccess: (tokenResponse: TokenResponse) => {
-            handleSetAccessToken(tokenResponse)
+        flow: 'auth-code',
+        onSuccess: async (codeResponse: CodeResponse) => {
+            const authDetails = await authService.doLogin(codeResponse.code)
+            setUserDetails({
+               firstName: authDetails.userFirstName,
+               picture: authDetails.userPicture,
+               locale: authDetails.userLocale
+            })
+            setLogged(true)
         },
+        onError: errorResponse => console.error(errorResponse)
     })
 
-    const handleGetAccessToken = () => {
-        const savedAccessToken = persistDataService.get(ACCESS_TOKEN_KEY)
-        if (savedAccessToken) {
-            setAccessToken(savedAccessToken)
-            setLogged(true)
-        } else {
-            setLogged(false)
-        }
-    }
-
-    useEffect(handleGetAccessToken, [])
-
-    const handleSetAccessToken = (tokenResponse: TokenResponse) => {
-        if (!tokenResponse) {
-            return
-        }
-        persistDataService.set(ACCESS_TOKEN_KEY, tokenResponse.access_token)
-        handleGetAccessToken()
-        if (hasGrantedAnyScopeGoogle(tokenResponse, 'spreadsheets')) {
-            console.log('yes!')
-        }
+    const handleLogged = (authDetails: GoogleCredentials & GoogleUserDetails) => {
+        setUserDetails({
+            firstName: authDetails.userFirstName,
+            picture: authDetails.userPicture,
+            locale: authDetails.userLocale
+        })
+        setLogged(true)
     }
 
     return (
         <AuthContext.Provider value={{
-            accessToken,
+            logged,
+            userDetails,
             doLogin,
-            logged
         }}>
             
             {children}

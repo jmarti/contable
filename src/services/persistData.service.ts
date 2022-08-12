@@ -1,7 +1,9 @@
+import store from 'store'
+
 const persistDataService = {
-    get: (key: string) => localStorage.getItem(key),
-    set: (key: string, value: string) => localStorage.setItem(key, value),
-    delete: (key: string) => localStorage.removeItem(key)
+    get: (key: string) => store.get(key),
+    set: (key: string, value: any) => store.set(key, value),
+    remove: (key: string) => store.remove(key)
 }
 
 export default persistDataService
