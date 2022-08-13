@@ -1,12 +1,14 @@
-import { ReactNode, useEffect } from "react"
+import { ReactNode } from "react"
+import { Link, useLocation } from "react-router-dom"
 import { Layout, Menu } from 'antd'
 import type { MenuProps } from 'antd'
-import { SettingOutlined } from '@ant-design/icons'
+import { SettingOutlined, TagOutlined } from '@ant-design/icons'
+
 import { useAuthContext } from "../contexts/Auth.context"
 import logo from '../assets/logo.svg'
 import LoginButton from "../components/LoginButton"
-import { Link, useLocation } from "react-router-dom"
 
+import classes from './PageLayout.module.css'
 
 const { Content, Sider } = Layout
 
@@ -15,6 +17,11 @@ const PageLayout = ({ children }: { children: ReactNode}) => {
     const location = useLocation()
 
     const loggedMenuItems: MenuProps['items'] = [
+        {
+            key: '/new-expense',
+            icon: <TagOutlined />,
+            label: <Link to="/new-expense">New expense</Link>
+        },
         {
             key: '/settings',
             icon: <SettingOutlined />,
@@ -29,7 +36,7 @@ const PageLayout = ({ children }: { children: ReactNode}) => {
                 collapsedWidth="0"
                 zeroWidthTriggerStyle={{ top: 0 }}
             >
-                <div style={{ padding: 10 }}>
+                <div style={{ padding: '20px 22px' }}>
                     <img src={logo} width={120} />
                 </div>
                     {logged === false && (
@@ -43,12 +50,11 @@ const PageLayout = ({ children }: { children: ReactNode}) => {
                             theme='dark'
                             items={loggedMenuItems}
                             selectedKeys={[location.pathname]}
-                            style={{ display: 'flex', justifyContent: 'flex-end', flex: 1 }}
                         />
                     )}
             </Sider>
             <Layout>
-                <Content style={{ minHeight: '100vh', padding: 50 }}>
+                <Content className={classes.pageLayoutContent}>
                     {children}
                 </Content>
             </Layout>

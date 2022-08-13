@@ -1,0 +1,27 @@
+.amountInput {
+    padding: 11px 80px 11px 11px;
+    /* max-width: 100%;
+    min-width: 200px; */
+}
+.amountInput__withValue {
+    padding-top: 5px;
+    padding-bottom: 17px;
+}
+.convertedAmount {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    padding: 5px 14px;
+    font-size: 12px;
+    color: rgba(0,0,0,.45);
+    pointer-events: none;
+}
+.currencySelector {
+    position: absolute;
+    width: 72px;
+    top: 31px;
+    right: 9px;
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+}

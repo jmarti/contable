@@ -1,13 +1,13 @@
-import { AppContextProvider } from './App.context'
-import { Routes, Route } from 'react-router-dom'
-
-import 'antd/dist/antd.min.css'
-import { DashboardView, SettingsView } from './views'
-import RequireAuth from './components/RequireAuth'
-import PageLayout from './layouts/PageLayout'
 import { Suspense } from 'react'
-import { AuthContextProvider } from './contexts/Auth.context'
+import { Routes, Route } from 'react-router-dom'
 import { GoogleOAuthProvider } from '@react-oauth/google'
+import 'antd/dist/antd.min.css'
+
+import { AppContextProvider } from './App.context'
+import { AuthContextProvider } from './contexts/Auth.context'
+import { DashboardView, NewExpenseView, SettingsView } from './views'
+import PageLayout from './layouts/PageLayout'
+import RequireAuth from './components/RequireAuth'
 
 const App = () => (
     <AppContextProvider>
@@ -30,6 +30,14 @@ const App = () => (
                             element={
                                 <Suspense fallback={<>...</>}>
                                     <SettingsView />
+                                </Suspense>
+                            }
+                        />
+                        <Route
+                            path="/new-expense"
+                            element={
+                                <Suspense fallback={<>...</>}>
+                                    <NewExpenseView />
                                 </Suspense>
                             }
                         />

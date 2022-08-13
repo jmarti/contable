@@ -6,30 +6,25 @@ import persistDataService from "../../services/persistData.service";
 type GoogleSheetUrl = string | null
 
 type SettingsContextType = {
-    googleSheetUrl: string | null,
-    setGoogleSheetUrl: (googleSheetUrl: GoogleSheetUrl) => void,
-    isFetching: boolean
+    googleSheetUrl: GoogleSheetUrl,
+    setGoogleSheetUrl: (googleSheetUrl: GoogleSheetUrl) => void
 }
 
 
 export const SettingsContext = createContext<SettingsContextType>({
     googleSheetUrl: null,
-    setGoogleSheetUrl: () => {},
-    isFetching: false
+    setGoogleSheetUrl: () => {}
 })
 
 export const SettingsContextProvider = ({ children }: { children: ReactNode }) => {
 
     const [googleSheetUrl, setGoogleSheetUrl] = useState<GoogleSheetUrl>(null)
-    const [isFetching, setIsFetching] = useState<boolean>(false)
 
     useEffect(() => {
-        setIsFetching(true)
         const savedGoogleSheetUrl = persistDataService.get(GOOGLE_SHEET_URL_KEY)
         if (savedGoogleSheetUrl) {
             setGoogleSheetUrl(savedGoogleSheetUrl)
         }
-        setIsFetching(false)
     }, [])
 
     const handleSetGoogleSheetUrl = async (url: GoogleSheetUrl) => {
@@ -50,8 +45,7 @@ export const SettingsContextProvider = ({ children }: { children: ReactNode }) =
     return (
         <SettingsContext.Provider value={{
             googleSheetUrl,
-            setGoogleSheetUrl: handleSetGoogleSheetUrl,
-            isFetching
+            setGoogleSheetUrl: handleSetGoogleSheetUrl
         }}>
             {children}
         </SettingsContext.Provider>

@@ -1,0 +1,9 @@
+.pageLayoutContent {
+    min-height: 100vh;
+    padding: 50px;
+}
+@media (max-width: 767px) {
+    .pageLayoutContent {
+        padding: 20px;
+    }
+}

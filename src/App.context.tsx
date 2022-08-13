@@ -1,13 +1,20 @@
-import { createContext, ReactNode, useContext } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 
-type AppContextType = {}
+type AppContextType = {
+    baseCurrency: string | null
+}
 
-export const AppContext = createContext<AppContextType>({})
+export const AppContext = createContext<AppContextType>({
+    baseCurrency: null
+})
 
 export const AppContextProvider = ({ children }: { children: ReactNode }) => {
+    const [baseCurrency] = useState<string>('COP')
+    
     return (
         <AppContext.Provider value={{
+            baseCurrency
         }}>
             {children}
         </AppContext.Provider>

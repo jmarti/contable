@@ -5,7 +5,7 @@ import { useSettingsContext } from "./Settings.context"
 import { SettingsContextProvider } from "./Settings.context"
 
 const SettingsView = () => {
-    const {googleSheetUrl, isFetching, setGoogleSheetUrl} = useSettingsContext()
+    const {googleSheetUrl, setGoogleSheetUrl} = useSettingsContext()
     const [linkGoogleSheetFormStatus, setLinkGoogleSheetFormStatus] = useState<{
         status: ValidateStatus,
         messsage: string
@@ -29,42 +29,40 @@ const SettingsView = () => {
     }
     return (
         <>
-            {isFetching ? <>Loading...</> : (
-                <Card title="Link your Google GoogleSheet" bordered={false}>
-                    <Form
-                        form={linkGoogleSheetForm}
-                        layout="vertical"
-                        autoComplete="off"
-                        onFinish={handleSubmit}
-                        initialValues={{ googleSheetUrl }}
+            <Card title="Link your Google GoogleSheet" bordered={false}>
+                <Form
+                    form={linkGoogleSheetForm}
+                    layout="vertical"
+                    autoComplete="off"
+                    onFinish={handleSubmit}
+                    initialValues={{ googleSheetUrl }}
+                >
+                    <Form.Item
+                        name="googleSheetUrl"
+                        label="Google Sheet URL"
+                        rules={[{ required: true, message: 'Please enter your Google Sheet URL.' }]}
+                        hasFeedback
+                        validateStatus={linkGoogleSheetFormStatus.status}
+                        help={linkGoogleSheetFormStatus.messsage}
                     >
-                        <Form.Item
-                            name="googleSheetUrl"
-                            label="Google Sheet URL"
-                            rules={[{ required: true, message: 'Please enter your Google Sheet URL.' }]}
-                            hasFeedback
-                            validateStatus={linkGoogleSheetFormStatus.status}
-                            help={linkGoogleSheetFormStatus.messsage}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item shouldUpdate>
-                            {() => (
-                                <Button
-                                    type="primary"
-                                    htmlType="submit"
-                                    disabled={
-                                        !linkGoogleSheetForm.isFieldsTouched(true) ||
-                                        !!linkGoogleSheetForm.getFieldsError().filter(({ errors }) => errors.length).length
-                                    }
-                                >
-                                    Save
-                                </Button>
-                            )}
-                        </Form.Item>
-                    </Form>
-                </Card>
-            )}
+                        <Input />
+                    </Form.Item>
+                    <Form.Item shouldUpdate>
+                        {() => (
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                disabled={
+                                    !linkGoogleSheetForm.isFieldsTouched(true) ||
+                                    !!linkGoogleSheetForm.getFieldsError().filter(({ errors }) => errors.length).length
+                                }
+                            >
+                                Save
+                            </Button>
+                        )}
+                    </Form.Item>
+                </Form>
+            </Card>
         </>
     )
 }
