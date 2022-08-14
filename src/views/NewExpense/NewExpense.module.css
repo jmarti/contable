@@ -1,18 +1,18 @@
 .amountInput {
-    padding: 11px 80px 11px 11px;
+    padding-right: 80px;
     /* max-width: 100%;
     min-width: 200px; */
 }
 .amountInput__withValue {
-    padding-top: 5px;
-    padding-bottom: 17px;
+    padding-top: 1px;
+    padding-bottom: 12px;
 }
 .convertedAmount {
     position: absolute;
     left: 0;
     bottom: 0;
-    padding: 5px 14px;
-    font-size: 12px;
+    padding: 1px 14px;
+    font-size: 11px;
     color: rgba(0,0,0,.45);
     pointer-events: none;
 }
@@ -21,7 +21,7 @@
     width: 72px;
     top: 31px;
     right: 9px;
-    padding: 8px 0;
+    padding: 3px 0;
     display: flex;
     align-items: center;
 }
